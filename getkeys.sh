@@ -17,15 +17,15 @@ else
   REPO_DIR=$1
 fi
 
-EXTRACT_DIR=${REPO_DIR}/.gnupg
+KEYERING_DIR=${REPO_DIR}/.gnupg
 KEYURL=http://de.archive.ubuntu.com/ubuntu/pool/main/u/ubuntu-keyring
 DEBPACKAGE=ubuntu-keyring_2012.05.19_all.deb
-if [ ! -e ${EXTRACT_DIR} ]
+if [ ! -e ${KEYERING_DIR} ]
 then
-  mkdir -p ${EXTRACT_DIR}
+  mkdir -p ${KEYERING_DIR}
 fi
 
-pushd ${EXTRACT_DIR} > /dev/null
+pushd ${KEYERING_DIR} > /dev/null
 echo "get latest ubuntu keyring package..."
 wget ${KEYURL}/${DEBPACKAGE}
 echo "extract ubuntu debian package..."
