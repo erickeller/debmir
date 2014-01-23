@@ -4,7 +4,7 @@
 #!/bin/bash
 
 ## Setting variables with explanations.
-
+SCRIPT_DIR=$(readlink -f ${0%/*})
 usage()
 {
   echo "usage: $0 dir/to/repo
@@ -29,12 +29,16 @@ outPath=$1
 #
 # create local keys
 #
-./getkeys.sh ${outPath}
+${SCRIPT_DIR}/getkeys.sh ${outPath}
 
 #
 # Don't touch the user's keyring, have our own instead
 #
-export GNUPGHOME=${outPath}/.gnupg
+LOCAL_KEY_DIR=`readlink -f ${outPath}/.gnupg`
+#export GNUPGHOME=${LOCAL_KEYS_DIR}
+LOCAL_KEY=${LOCAL_KEY_DIR}/usr/share/keyrings/ubuntu-archive-keyring.gpg
+echo "using ${LOCAL_KEY}"
+
 
 # Arch=         -a      # Architecture. For Ubuntu can be i386, powerpc or amd64.
 # sparc, only starts in dapper, it is only the later models of sparc.
@@ -79,6 +83,7 @@ debmirror       -a $arch \
                 -h $server \
                 -d $release \
                 -r $inPath \
+                --keyring ${LOCAL_KEY} \
                 --progress \
                 -e $proto \
                 $outPath
