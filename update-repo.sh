@@ -5,10 +5,36 @@
 
 ## Setting variables with explanations.
 
+usage()
+{
+  echo "usage: $0 dir/to/repo
+  example:
+  $0 /media/repos
+  $0 ./
+  "
+    exit 1
+}
+
+if [ $# -ne 1 ]
+then
+  usage
+fi
+
+
+# Outpath=              # Directory to store the mirror in
+# Make this a full path to where you want to mirror the material.
+#
+outPath=$1
+
+#
+# create local keys
+#
+./getkeys.sh ${outPath}
+
 #
 # Don't touch the user's keyring, have our own instead
 #
-export GNUPGHOME=/media/mariole/repo/.gnupg
+export GNUPGHOME=${outPath}/.gnupg
 
 # Arch=         -a      # Architecture. For Ubuntu can be i386, powerpc or amd64.
 # sparc, only starts in dapper, it is only the later models of sparc.
@@ -40,10 +66,6 @@ inPath=/ubuntu
 #
 proto=http
 
-# Outpath=              # Directory to store the mirror in
-# Make this a full path to where you want to mirror the material.
-#
-outPath=/media/mariole/repo
 
 # The --nosource option only downloads debs and not deb-src's
 # The --progress option shows files as they are downloaded
