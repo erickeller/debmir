@@ -53,7 +53,7 @@ section=main,restricted,universe,multiverse
 
 # Release=      -d      # Release of the system (Dapper, Edgy, Feisty, Gutsy, Hardy, Intrepid), and the -updates and -security ( -backports can be added if desired)
 #
-release=precise,precise-security,precise-updates
+release=precise,precise-security,precise-updates,precise-backports
 
 # Server=       -h      # Server name, minus the protocol and the path at the end
 # CHANGE "*" to equal the mirror you want to create your mirror from. au. in Australia  ca. in Canada.
@@ -79,12 +79,14 @@ proto=http
 #
 debmirror       -a $arch \
                 --source \
+                --md5sums \
+                --progress \
+                --passive \
                 -s $section \
                 -h $server \
                 -d $release \
                 -r $inPath \
                 --keyring ${LOCAL_KEY} \
-                --progress \
                 -e $proto \
                 $outPath
 
