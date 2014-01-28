@@ -20,7 +20,6 @@ then
   usage
 fi
 
-
 # Outpath=              # Directory to store the mirror in
 # Make this a full path to where you want to mirror the material.
 #
@@ -34,12 +33,22 @@ ${SCRIPT_DIR}/getkeys.sh ${outPath}
 #
 # Don't touch the user's keyring, have our own instead
 #
-LOCAL_KEY_DIR=`readlink -f ${outPath}/.gnupg`
-#export GNUPGHOME=${LOCAL_KEYS_DIR}
-LOCAL_KEY=${LOCAL_KEY_DIR}/usr/share/keyrings/ubuntu-archive-keyring.gpg
-echo "using ${LOCAL_KEY}"
-
-
+LOCAL_KEYS_DIR=`readlink -f ${outPath}/.gnupg`
+#
+# checkout debmirror keyring capabilities
+#
+man debmirror | grep "keyring=file" 2>&1 > /dev/null
+if [ $? -eq 0 ]
+then
+  LOCAL_KEY=${LOCAL_KEYS_DIR}/usr/share/keyrings/ubuntu-archive-keyring.gpg
+  echo "using keyring option with ${LOCAL_KEY}"
+  KEY_OPTION="--keyring ${LOCAL_KEY}"
+else
+  echo "exporting GNUPGHOME=${LOCAL_KEYS_DIR}"
+  export GNUPGHOME=${LOCAL_KEYS_DIR}
+  KEY_OPTION=""
+fi
+echo "$KEY_OPTION"
 # Arch=         -a      # Architecture. For Ubuntu can be i386, powerpc or amd64.
 # sparc, only starts in dapper, it is only the later models of sparc.
 #
@@ -86,9 +95,8 @@ debmirror       -a $arch \
                 -h $server \
                 -d $release \
                 -r $inPath \
-                --keyring ${LOCAL_KEY} \
+                ${KEY_OPTION} \
                 -e $proto \
                 $outPath
-
 
 #### End script to automate building of Ubuntu mirror ####
