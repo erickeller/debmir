@@ -20,6 +20,12 @@ then
   usage
 fi
 
+# check if the required programm are available
+if ! ${SCRIPT_DIR}/configure.sh; then
+  echo "please install missing dependecies"
+fi
+
+
 # Outpath=              # Directory to store the mirror in
 # Make this a full path to where you want to mirror the material.
 #
