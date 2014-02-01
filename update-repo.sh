@@ -85,6 +85,10 @@ inPath=/ubuntu
 #
 proto=http
 
+# cache days is set to 15 days before debmirror rebuilds all the index
+# in order to check the mirror consistency.
+#
+cache_days=15
 
 # The --nosource option only downloads debs and not deb-src's
 # The --progress option shows files as they are downloaded
@@ -101,6 +105,7 @@ debmirror       -a $arch \
                 -h $server \
                 -d $release \
                 -r $inPath \
+                --state-cache-days ${cache_days} \
                 ${KEY_OPTION} \
                 -e $proto \
                 $outPath
