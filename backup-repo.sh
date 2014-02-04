@@ -18,7 +18,7 @@ then
   usage
 fi
 
-RSYNC_OPTION="--verbose --checksum --recursive --links --hard-links --perms --executability --group --times --compress --progress"
+RSYNC_OPTION="--verbose --checksum --recursive --links --hard-links --delete --perms --executability --group --times --compress --progress"
 FROM=$1
 TO=$2
 echo "rsync from: ${FROM} to: ${TO}
