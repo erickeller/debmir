@@ -5,7 +5,7 @@
 
 return_value=0
 # add additional programm here
-LISTING="debmirror rsync wget"
+LISTING="debmirror rsync wget gpg"
 
 
 # take a listing and check if the porgramm exists
