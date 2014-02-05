@@ -38,8 +38,16 @@ echo "get latest ubuntu keyring package..."
 wget ${KEYURL}/${DEBPACKAGE}
 echo "extract ubuntu debian package..."
 dpkg-deb -x ${DEBPACKAGE} ./
-gpg --no-default-keyring --keyring ./trustedkeys.gpg --import ./usr/share/keyrings/ubuntu-archive-keyring.gpg
+pwd
+gpg --homedir ${KEYERING_DIR} --no-default-keyring --keyring ./trustedkeys.gpg --import ./usr/share/keyrings/ubuntu-archive-keyring.gpg
+if [ $? -ne 0 ]
+then
+  echo "the following command encountered problem to import keys:
+gpg --homedir ${KEYERING_DIR} --no-default-keyring --keyring ./trustedkeys.gpg --import ./usr/share/keyrings/ubuntu-archive-keyring.gpg"
+  exit 1
+fi
 popd > /dev/null
 
 echo "store keyering location to ${REPO_DIR}/.keys_dir ..."
 echo "${KEYERING_DIR}" > ${REPO_DIR}/.keys_dir
+exit 0
